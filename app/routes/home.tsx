@@ -2,6 +2,8 @@ import { ArrowRight, ArrowUp, ArrowUpRight, Clock } from 'lucide-react'
 import { Navbar } from '../../components/Navbar'
 import type { Route } from './+types/home'
 import Button from '../../components/ui/Button'
+import { Upload } from '../../components/Upload'
+import { useNavigate } from 'react-router'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,6 +13,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const navigate = useNavigate()
+  const onUploadComplete = async (base64: string) => {
+    const newid = Date.now().toString()
+    navigate(`visualizer/${newid}`)
+    return true
+  }
+
   return (
     <div className='p-10 text-center home'>
       <Navbar />
@@ -46,7 +55,7 @@ export default function Home() {
               <h3>Upload your floor plan here</h3>
               <p>Supports JPG, PNG, formats up to 10MB</p>
             </div>
-            <p>Upload Images</p>
+            <Upload onComplete={onUploadComplete} />
           </div>
         </div>
       </section>
@@ -76,7 +85,7 @@ export default function Home() {
                 <div>
                   <h3>Project New York</h3>
                   <div className='meta'>
-                    <Clock size={12}/>
+                    <Clock size={12} />
                     <span>{new Date().toLocaleDateString()}</span>
                     <span>by Alwaysdev</span>
                   </div>
